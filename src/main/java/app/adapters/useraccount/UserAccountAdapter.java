@@ -12,13 +12,6 @@ import app.ports.UserAccountPort;
 public class UserAccountAdapter implements UserAccountPort {
     @Autowired
     private UserAccountRepository userAccountRepository;
-    
-
-    @Override
-    public void registerUser(UserAccount userAccount) {
-        UserAccountEntity entity = adapterAccount(userAccount);
-        userAccountRepository.save(entity);
-    }
 
     private UserAccountEntity adapterAccount(UserAccount userAccount) {
         UserAccountEntity entity = new UserAccountEntity();
@@ -26,6 +19,12 @@ public class UserAccountAdapter implements UserAccountPort {
         entity.setPassword(userAccount.getPassword());
         entity.setRole(userAccount.getRole());
         return entity;
+    }    
+
+    @Override
+    public void saveUser(UserAccount user) {
+        UserAccountEntity entity = adapterAccount(user);
+        userAccountRepository.save(entity);
     }
 
     @Override
@@ -44,17 +43,12 @@ public class UserAccountAdapter implements UserAccountPort {
         throw new UnsupportedOperationException("Unimplemented method 'changePassword'");
     }
 
-
-    @Override
-    public void saveUser(UserAccount user) {
-        UserAccountEntity entity = new UserAccountEntity(user);
-        userAccountRepository.save(entity);
-    }
-
-
     @Override
     public void deleteUser(String username) {
-        userAccountRepository.deleteByUsername(username);
+        UserAccountEntity entity = userAccountRepository.findByUsername(username);
+        if  ( entity != null) {
+            userAccountRepository.delete(entity);
+        }
     }
 
 
@@ -70,7 +64,13 @@ public class UserAccountAdapter implements UserAccountPort {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAllUsers'");
     }
-    private 
+
+    @Override
+    public UserAccount findByDocument(Long document) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByDocument'");
+    }
+    
     
     
 }

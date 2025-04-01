@@ -32,10 +32,6 @@ public class UserAccountService {
             log.info("Inicio de sesion exitoso");
             return userValidate;
         }
-   public void saveUser(UserAccount user) {
-    	
-    	
-    }
 
     //Se cierra la sesion del usuario actual
     public void logout() {
@@ -53,12 +49,12 @@ public class UserAccountService {
     }
 
     //Registra un nuevo usuario
-    public void registerUser(UserAccount user) throws Exception {
+    public void saveUser(UserAccount user) throws Exception {
         if(userPort.findByUserName(user.getUserName())!= null) {
             log.error("El nombre de usuario ya existe");
             throw new Exception("El nombre de usuario ya existe");
         }
-        userPort.registerUser(user);
+        userPort.saveUser(user);
         log.info("Usuario registrado exitosamente");
     }
 

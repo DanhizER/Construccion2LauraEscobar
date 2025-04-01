@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import app.domain.models.Person;
+import app.domain.models.UserAccount;
 import app.domain.types.Role;
 import app.ports.PersonPort;
 import app.ports.UserAccountPort;
@@ -31,7 +32,9 @@ public class AdminServices{
 		}
 			person.setRole(Role.SELLER);
 			personPort.savePerson(person);
-			userAccountPort.saveUser(person);
+
+			UserAccount userAccount = new UserAccount(person.getDocument(), "defaultPassword", Role.SELLER);
+			userAccountPort.saveUser(userAccount);
 			log.info("Vendedor/@ Registrado: "+ person.getName());		
     }
 	
@@ -42,7 +45,9 @@ public class AdminServices{
 			}
 			person.setRole(Role.VETERINARIAN);
 			personPort.savePerson(person);
-			userAccountPort.saveUser(person);			
+			
+			UserAccount userAccount = new UserAccount(person.getDocument(), "defaultPassword", Role.VETERINARIAN);
+			userAccountPort.saveUser(userAccount);			
 			log.info("Veterinari@ Registrado: "+ person.getName());
     }
 	

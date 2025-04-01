@@ -6,5 +6,4 @@ import app.adapters.useraccount.entity.UserAccountEntity;
 
 public interface UserAccountRepository extends JpaRepository<UserAccountEntity, Long>{
     UserAccountEntity findByUsername(String username);
-    void deleteByUsername(String username);
 }

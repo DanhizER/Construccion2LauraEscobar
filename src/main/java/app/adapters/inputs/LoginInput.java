@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import app.adapters.inputs.utils.UserValidator;
 import app.adapters.inputs.utils.Utils;
-import app.domain.models.User;
+import app.domain.models.UserAccount;
 import app.domain.services.LoginService;
 import app.ports.InputPort;
 import lombok.Getter;
@@ -23,23 +23,15 @@ public class LoginInput implements InputPort {
 	@Autowired
 	private AdminInput adminInput;
 	@Autowired
-	private GuestInput guestInput;
-	@Autowired
-	private PartnerInput partnerInput;
-	@Autowired
 	private UserValidator userValidator;
 	@Autowired
 	private LoginService loginService;
 	private final String MENU = "Ingrese la opcion que desea:\n 1. iniciar sesion \n 2. salir";
 
-	public LoginInput(AdminInput adminInput, GuestInput guestInput, PartnerInput partnerInput) {
+	public LoginInput(AdminInput adminInput) {
 		super();
 		this.adminInput = adminInput;
-		this.guestInput = guestInput;
-		this.partnerInput = partnerInput;
 		this.inputs = new HashMap<String, InputPort>();
-		inputs.put("partner", partnerInput);
-		inputs.put("guest", guestInput);
 		inputs.put("admin", adminInput);
 
 	}
@@ -82,7 +74,7 @@ public class LoginInput implements InputPort {
 			String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
 			System.out.println("ingrese su contraseña");
 			String password = userValidator.passwordValidator(Utils.getReader().nextLine());
-			User user = new User();
+			UserAccount user = new User();
 			user.setUserName(userName);
 			user.setPassword(password);
 			user = loginService.login(user);

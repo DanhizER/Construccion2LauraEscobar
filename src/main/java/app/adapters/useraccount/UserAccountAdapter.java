@@ -39,8 +39,12 @@ public class UserAccountAdapter implements UserAccountPort {
 
     @Override
     public void changePassword(String username, String oldPassword, String newPassword) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'changePassword'");
+        UserAccountEntity entity = userAccountRepository.findByUsername(username);
+        if (entity == null || !entity.getPassword().equals(oldPassword)) {
+            throw new IllegalArgumentException("Usuario no encontrado o contraseña incorrecta");
+        }
+        entity.setPassword(newPassword);
+        userAccountRepository.save(entity);
     }
 
     @Override

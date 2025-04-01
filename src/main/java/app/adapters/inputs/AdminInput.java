@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import app.adapters.inputs.utils.PersonValidator;
 import app.adapters.inputs.utils.UserValidator;
 import app.adapters.inputs.utils.Utils;
-import app.domain.models.Partner;
 import app.domain.services.AdminService;
 import app.ports.InputPort;
 import lombok.Getter;
@@ -25,8 +24,8 @@ public class AdminInput implements InputPort {
 	@Autowired
 	private AdminService adminService;
 
-	private final String MENU = "Ingrese la opcion:" + " \n 1. para crear Socios." + " \n 2. ver facturas del club."
-			+ " \n 3. ver facturas de un socio." + " \n 4. ver facturas de una persona." + " \n 5. promover socios."+ " \n 6. cerrar sesion.";
+	private final String MENU = "Ingrese la opcion:" + " \n 1. Registrar usuario." + " \n 2. ver usuarios registrados"
+			+ " \n 3. ver mascotas por dueño" + " \n 4. ver historias clinicas" + " \n 5. eliminar usuario"+ " \n 6. cerrar sesion.";
 
 	public void menu() {
 		boolean sesion = true;
@@ -41,7 +40,7 @@ public class AdminInput implements InputPort {
 			String option = Utils.getReader().nextLine();
 			switch (option) {
 			case "1": {
-					this.createPartner();
+					this.;
 					return true;
 			}
 			case "6" :{
@@ -58,24 +57,6 @@ public class AdminInput implements InputPort {
 		}
 	}
 
-	private void createPartner() throws Exception {
-		System.out.println("ingrese el nombre del socio");
-		String name = personValidator.nameValidator(Utils.getReader().nextLine());
-		System.out.println("ingrese el documento del socio");
-		long document = personValidator.documentValidator(Utils.getReader().nextLine());
-		System.out.println("ingrese el numero celular del socio");
-		long cellPhone = personValidator.cellPhoneValidator(Utils.getReader().nextLine());
-		System.out.println("ingrese el userName del socio");
-		String userName = userValidator.userNameValidator(Utils.getReader().nextLine());
-		System.out.println("ingrese la contraseña socio");
-		String password = userValidator.passwordValidator(Utils.getReader().nextLine());
-		Partner partner = new Partner();
-		partner.setDocument(document);
-		partner.setName(name);
-		partner.setCellPhone(cellPhone);
-		partner.setUserName(userName);
-		partner.setPassword(password);
-		partner.setRole("partner");
-		adminService.registerPartner(partner);
-	}
+	private void createUser() throws Exception {
+		
 }

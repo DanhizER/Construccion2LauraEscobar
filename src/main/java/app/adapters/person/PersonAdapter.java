@@ -26,6 +26,7 @@ public class PersonAdapter implements PersonPort {
 	@Override
 	public Person findByDocument(long document){
 		PersonEntity personEntity = personRepository.findByDocument(document);
+		if (personEntity == null) return null;
 		return adapterPerson(personEntity);
 	}
 	

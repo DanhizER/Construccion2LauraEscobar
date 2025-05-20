@@ -9,6 +9,6 @@ public interface MedicalHistoryPort {
     void saveMedicalHistory(MedicalHistory medicalHistory);
     void updateMedicalHistory(MedicalHistory medicalHistory);
     List<Order> findPetOrders(Long petId);
-    List<MedicalHistory> findPetMedicalHistorys(Long petId);    
-    MedicalHistory findByIdMedicaHistory(Long medicalHistoryId);
+    List<MedicalHistory> findPetMedicalHistories(Long petId);    
+    MedicalHistory findByIdMedicalHistory(Long medicalHistoryId);
 }

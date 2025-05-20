@@ -110,36 +110,10 @@ public class VeterinarianService {
 	//Actualizamos la historia clinica
 	//Buscar HC 
 	public void updateMedicalHistory(MedicalHistory medicalHistory) {
-		MedicalHistory medicalHistoryExists = medicalHistoryPort.findByIdMedicaHistory(medicalHistory.getMedicalHistoryID());
+		MedicalHistory medicalHistoryExists = medicalHistoryPort.findByIdMedicalHistory(medicalHistory.getMedicalHistoryID());
 		if(medicalHistoryExists == null) {
 			log.error("No existe una historia clinica con el ID " + medicalHistory.getMedicalHistoryID());
 			throw new IllegalArgumentException("No existe una historia clinica con el ID " + medicalHistory.getMedicalHistoryID());
-		}
-		if (medicalHistoryExists.equals(medicalHistory)) {
-			log.warn("No hay cambios en la historia clínica con ID " + medicalHistory.getMedicalHistoryID());
-			return;
-		}
-		UserAccount user = userAccountPort.findByDocument(medicalHistory.getVeterinarian().getDocument());
-		if(user==null || !user.getRole().equals(Role.VETERINARIAN)) {
-			log.error("No exise usuario veterinario con ese numero de documento {} ",medicalHistory.getVeterinarian().getDocument());
-			throw new IllegalArgumentException("No exise usuario veterinario con ese numero de documento " + medicalHistory.getVeterinarian().getDocument());
-		}	
-		
-		Pet pet = petPort.findByIdPet(medicalHistory.getPet().getPetId());
-		if(pet == null) {
-			log.error("Mascota con el ID {} no exixte",medicalHistory.getPet().getPetId());
-			throw new IllegalArgumentException("No existe mascota con ID " + medicalHistory.getPet().getPetId());
-		}
-		
-		Order order = orderPort.findByOrderId(medicalHistory.getOrder().getOrderId());
-		if(order == null) {
-			log.error("Orden con id {} no existe para esta historia medica ",medicalHistory.getOrder().getOrderId());
-			throw new IllegalArgumentException("Esta orden no existe para esta historia medica. Codigo de orden: " + medicalHistory.getOrder().getOrderId());
-		}
-		
-		if(pet.getPetId() != order.getPet().getPetId()) {
-			log.error("La mascota con ID {} no esta asociada la orden {} ",medicalHistory.getPet().getPetId(),medicalHistory.getOrder().getOrderId());
-			throw new IllegalArgumentException("La mascota con ID " + medicalHistory.getPet().getPetId() +" no esta asociada la orden "+ medicalHistory.getOrder().getOrderId());
 		}
 		
 		medicalHistoryExists.setVeterinarian(medicalHistory.getVeterinarian());	
@@ -205,13 +179,14 @@ public class VeterinarianService {
 	
 	//buscamos la historia clinica de la mascota
 	public List <MedicalHistory> findAllMedicalHistoriesByPetId(Long petId){		
-		if (petId==null) {
+		Pet existingPet=petPort.findByIdPet(petId);
+		if (existingPet==null) {
 			log.error("Mascota con ID {} no encontrada",petId);
 			throw new IllegalArgumentException("Mascota con ID "+petId+" no encontrada");
 		}
-		List<MedicalHistory> history=medicalHistoryPort.findPetMedicalHistorys(petId);
+		List<MedicalHistory> history=medicalHistoryPort.findPetMedicalHistories(petId);
 		if(history==null || history.isEmpty()) {
-			log.error("Historias clinicas con ID de mascota {} no encontradas",petId);
+			log.error("Historia clinica con ID de mascota {} no encontrada",petId);
 			throw new IllegalArgumentException("Historia clinica con ID de mascota "+petId+" no encontrada");
 		}
 		log.info("Historia clinica de la mascota con ID {} ha sido encontrada",petId);

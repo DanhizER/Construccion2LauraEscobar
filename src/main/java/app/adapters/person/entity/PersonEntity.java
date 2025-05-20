@@ -2,10 +2,7 @@ package app.adapters.person.entity;
 
 import app.domain.models.Person;
 import app.domain.types.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,14 +12,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class PersonEntity {
-	public PersonEntity(Person person) {
-		this.document = person.getDocument();
-		this.name = person.getName();
-		this.age = person.getAge();
-		this.role = person.getRole();
-	}
-	
+public class PersonEntity {	
 	@Id
 	@Column(name="document")
 	private long document;
@@ -32,4 +22,11 @@ public class PersonEntity {
 	private int age;
 	@Column(name="role")
 	private Role role;
+
+	public PersonEntity(Person person) {
+		this.document = person.getDocument();
+		this.name = person.getName();
+		this.age = person.getAge();
+		this.role = person.getRole();
+	}
 }

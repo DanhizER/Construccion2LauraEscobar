@@ -20,7 +20,7 @@ public class Pet {
 	private double weight;
 	
 	public Pet(String namePet, long ownersId, int age, long petId, String species, String race, String characteristics,
-			double weight) {;
+			double weight) {
 		this.namePet = namePet;
 		this.ownersId = ownersId;
 		this.age = age;

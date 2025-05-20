@@ -1,34 +1,33 @@
 package app.adapters.useraccount.entity;
 
-import app.adapters.person.entity.PersonEntity;
 import app.domain.models.UserAccount;
 import app.domain.types.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 @Entity
 @Table(name="user_account")
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+
 public class UserAccountEntity {
     public UserAccountEntity(UserAccount userAccount) {
-        this.person = new PersonEntity(userAccount);
-        this.userId = userAccount.getUserId();
+        this.document = userAccount.getDocument();
         this.username = userAccount.getUserName();
         this.password = userAccount.getPassword();
         this.role = userAccount.getRole();
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="userId")
-    private long userId;
-    @OneToOne
-    @JoinColumn(name = "document", referencedColumnName = "document", insertable = false, updatable = false)
-    private PersonEntity person;
+    @Column(name="document")
+    private Long document;
     @Column(name="username")
     private String username;
     @Column(name="password")
@@ -36,5 +35,12 @@ public class UserAccountEntity {
     @Column(name="role")
     private Role role;
 
-
+    public UserAccount toDomain() {
+        return UserAccount.builder()
+                .document(document)
+                .userName(username)
+                .password(password)
+                .role(role)
+                .build();
+    }
 }

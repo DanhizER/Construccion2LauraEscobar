@@ -27,7 +27,7 @@ public class PersonService {
 			throw new Exception("Ya existe una persona con esa cedula");
 		}
 		personPort.savePerson(person);
-		System.out.println("La persona "+ person.getName()+" ha sido agregada exitosamente");
+		System.out.println("La persona "+ person.getName()+" ha sido creada exitosamente");
 	}
 	
 	//Buscamos a la persona por su documento

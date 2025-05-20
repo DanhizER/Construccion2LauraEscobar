@@ -5,6 +5,7 @@ import java.util.List;
 import app.domain.models.UserAccount;
 
 public interface UserAccountPort {
+	  void registerUser(UserAccount userAccount);
 	  UserAccount login(String username, String password);
 	  void changePassword(String username, String oldPassword, String newPassword);
 	  void saveUser(UserAccount user);

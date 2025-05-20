@@ -70,7 +70,7 @@ public class OwnerService {
 	
 	//Listamos todas las mascotas del dueño
 	public List<Pet> listOwnerPets(long ownerDoc){
-		List<Pet> pets=petPort.findByOwnerCedula(ownerDoc);
+		List<Pet> pets=petPort.findByOwnerId(ownerDoc);
 		log.info("Mascotas encontradas para el dueño con cédula {}: {}", ownerDoc, pets.size());
 		return pets;
 	}

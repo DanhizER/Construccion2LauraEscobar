@@ -1,80 +1,79 @@
 package app.adapters.useraccount;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import app.adapters.useraccount.entity.UserAccountEntity;
 import app.adapters.useraccount.repository.UserAccountRepository;
 import app.domain.models.UserAccount;
 import app.ports.UserAccountPort;
 
+@Service
 public class UserAccountAdapter implements UserAccountPort {
+    
     @Autowired
     private UserAccountRepository userAccountRepository;
-
-    private UserAccountEntity adapterAccount(UserAccount userAccount) {
-        UserAccountEntity entity = new UserAccountEntity();
-        entity.setUsername(userAccount.getUserName());
-        entity.setPassword(userAccount.getPassword());
-        entity.setRole(userAccount.getRole());
-        return entity;
-    }    
+    
 
     @Override
-    public void saveUser(UserAccount user) {
-        UserAccountEntity entity = adapterAccount(user);
-        userAccountRepository.save(entity);
+    public void registerUser(UserAccount userAccount) {
+        userAccountRepository.save(new UserAccountEntity(userAccount));
     }
 
     @Override
     public UserAccount login(String username, String password) {
         UserAccountEntity entity = userAccountRepository.findByUsername(username);
         if (entity != null && entity.getPassword().equals(password)) {
-            return null;
+            return entity.toDomain();
         }
-        return adapterAccount(entity);
+        return null;
     }
 
 
     @Override
     public void changePassword(String username, String oldPassword, String newPassword) {
-        UserAccountEntity entity = userAccountRepository.findByUsername(username);
-        if (entity == null || !entity.getPassword().equals(oldPassword)) {
-            throw new IllegalArgumentException("Usuario no encontrado o contraseña incorrecta");
+       UserAccountEntity entity = userAccountRepository.findByUsername(username);
+        if (entity != null && entity.getPassword().equals(oldPassword)) {
+            entity.setPassword(newPassword);
+            userAccountRepository.save(entity);
         }
-        entity.setPassword(newPassword);
-        userAccountRepository.save(entity);
     }
 
+
     @Override
-    public void deleteUser(String username) {
-        UserAccountEntity entity = userAccountRepository.findByUsername(username);
-        if  ( entity != null) {
-            userAccountRepository.delete(entity);
-        }
+    public void saveUser(UserAccount user) {
+        userAccountRepository.save(new UserAccountEntity(user));
+    }
+
+
+    @Override
+    public void deleteUser(Long document) {
+        userAccountRepository.deleteById(document);
     }
 
 
     @Override
     public UserAccount findByUserName(String username) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByUserName'");
+        UserAccountEntity entity = userAccountRepository.findByUsername(username);
+        return entity != null ? entity.toDomain() : null;
     }
 
 
     @Override
     public List<UserAccount> findAllUsers() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAllUsers'");
-    }
-
+        return userAccountRepository.findAll()
+                .stream()
+                .map(UserAccountEntity::toDomain)
+                .collect(Collectors.toList());
+    } 
+    
     @Override
     public UserAccount findByDocument(Long document) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByDocument'");
+        UserAccountEntity entity = userAccountRepository.findByDocument(document);
+        return entity != null ? entity.toDomain() : null;
     }
-    
-    
     
 }

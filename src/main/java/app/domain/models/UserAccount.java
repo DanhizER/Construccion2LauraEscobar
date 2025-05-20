@@ -4,10 +4,12 @@ import app.domain.types.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @NoArgsConstructor
+@SuperBuilder
 public class UserAccount extends Person {
 	private String userName;
 	private String password;

@@ -9,6 +9,6 @@ public interface PetPort {
     void updatePet(Pet pet);
     boolean existsPetById(Long id);
     Pet findByIdPet(long id);
-    List<Pet> findByOwnerCedula(long ownerCedula);
+    List<Pet> findByOwnerId(long ownerId);
 }
  

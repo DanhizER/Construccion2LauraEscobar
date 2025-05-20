@@ -3,8 +3,8 @@ package app.domain.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import app.domain.models.Person;
 import app.domain.models.UserAccount;
+import app.domain.models.Person;
 import app.domain.types.Role;
 import app.ports.PersonPort;
 import app.ports.UserAccountPort;
@@ -25,28 +25,44 @@ public class AdminServices{
     @Autowired
     private UserAccountPort userAccountPort;
     
-    public void registerSeller(Person person){
+    public void registerSeller(Person person, String userName, String password){
 	    if(personPort.existPerson(person.getDocument())) {
-	    	log.error("Registro fallido Ya existe una persona con esa cédula: {}", person.getDocument());
+	    	log.error("Registro fallido, Ya existe una persona con esa cédula: {}", person.getDocument());
 	    	throw new IllegalArgumentException("Ya existe una persona con esa cedula");
 		}
 			person.setRole(Role.SELLER);
 			personPort.savePerson(person);
 
-			UserAccount userAccount = new UserAccount(person.getDocument(), "defaultPassword", Role.SELLER);
+			UserAccount userAccount = UserAccount.builder()
+					.document(person.getDocument())
+					.name(person.getName())
+					.age(person.getAge())
+					.role(Role.SELLER)
+					.userName(userName)
+					.password(password)
+					.build();
+					
 			userAccountPort.saveUser(userAccount);
 			log.info("Vendedor/@ Registrado: "+ person.getName());		
     }
 	
-    public void registerVeterinarian(Person person) {
+    public void registerVeterinarian(Person person, String userName, String password) {
 	    	if(personPort.existPerson(person.getDocument())) {
-				log.error("Registro fallido /nYa existe una persona con esa cédula: {}", person.getDocument());
+				log.error("Registro fallido, Ya existe una persona con esa cédula: {}", person.getDocument());
 				throw new IllegalArgumentException("Ya existe una persona con esa cedula");
 			}
 			person.setRole(Role.VETERINARIAN);
 			personPort.savePerson(person);
-			
-			UserAccount userAccount = new UserAccount(person.getDocument(), "defaultPassword", Role.VETERINARIAN);
+
+			UserAccount userAccount = UserAccount.builder()
+					.document(person.getDocument())
+					.name(person.getName())
+					.age(person.getAge())
+					.role(Role.SELLER)
+					.userName(userName)
+					.password(password)
+					.build();
+					
 			userAccountPort.saveUser(userAccount);			
 			log.info("Veterinari@ Registrado: "+ person.getName());
     }

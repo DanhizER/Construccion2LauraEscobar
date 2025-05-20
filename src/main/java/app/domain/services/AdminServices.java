@@ -58,7 +58,7 @@ public class AdminServices{
 					.document(person.getDocument())
 					.name(person.getName())
 					.age(person.getAge())
-					.role(Role.SELLER)
+					.role(Role.VETERINARIAN)
 					.userName(userName)
 					.password(password)
 					.build();

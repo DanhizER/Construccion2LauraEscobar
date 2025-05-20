@@ -26,7 +26,7 @@ public class UserAccountEntity {
     }
 
     @Id
-    @Column(name="document")
+    @JoinColumn(name="document", referencedColumnName = "document")
     private Long document;
     @Column(name="username")
     private String username;

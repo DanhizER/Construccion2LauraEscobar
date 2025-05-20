@@ -7,6 +7,8 @@ import app.adapters.owner.entity.OwnerEntity;
 import app.adapters.owner.repository.OwnerRepository;
 import app.domain.models.Person;
 
+import java.util.List;
+
 @Component
 public class OwnerAdapter {
     @Autowired
@@ -27,7 +29,7 @@ public class OwnerAdapter {
     public Person findByDocument(Long document){
         return ownerRepository.findByDocument(document)
                 .map(OwnerEntity::toDomain)
-                .orElse(other:null);
+                .orElse(null);
     }
     
     @Override

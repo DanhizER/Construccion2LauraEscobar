@@ -1,7 +1,7 @@
 package app.adapters.pet;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import app.domain.models.Pet;
 import app.ports.PetPort;
 import app.adapters.pet.entity.PetEntity;
@@ -10,7 +10,7 @@ import app.adapters.pet.repository.PetRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class PetAdapter implements PetPort {
 
     @Autowired
@@ -32,7 +32,7 @@ public class PetAdapter implements PetPort {
     }
 
     @Override
-    public Pet findByIdPet(long id) {
+    public Pet findByIdPet(Long id) {
         return petRepository.findById(id)
                 .map(PetEntity::toDomain)
                 .orElse(null);
@@ -40,8 +40,8 @@ public class PetAdapter implements PetPort {
 
     @Override
     public List<Pet> findByOwnerId(Long ownerId) {
-        return petRepository.findByOwnersId(ownerId)
-                .stream()
+        List<PetEntity> entities = petRepository.findByOwnersIdDocument(ownerId);
+        return entities.stream()
                 .map(PetEntity::toDomain)
                 .collect(Collectors.toList());
     }

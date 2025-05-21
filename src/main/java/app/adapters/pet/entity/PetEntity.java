@@ -1,6 +1,7 @@
 package app.adapters.pet.entity;
 
 import jakarta.persistence.*;
+import app.adapters.owner.entity.OwnerEntity;
 import app.domain.models.Pet;
 import lombok.*;
 
@@ -15,13 +16,13 @@ public class PetEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "petid")
     private Long petId;
     @Column(name = "namePet")
-    private String namePet;
-   
+    private String namePet;   
     @ManyToOne
-    @JoinColumn(name = "ownersId", referencedColumnName = "ownersId")
-	private long ownersId;
+    @JoinColumn(name = "ownersId", referencedColumnName = "document")
+	private OwnerEntity ownersId;
     @Column(name = "age")
 	private int age;
     @Column(name = "species")
@@ -36,7 +37,7 @@ public class PetEntity {
     public PetEntity(Pet pet) {
         this.petId = pet.getPetId();
         this.namePet = pet.getNamePet();
-        this.ownersId = pet.getOwnersId();
+        this.ownersId = OwnerEntity.builder().document(pet.getOwnersId()).build();
         this.age = pet.getAge();
         this.species = pet.getSpecies();
         this.race = pet.getRace();
@@ -48,7 +49,7 @@ public class PetEntity {
         return Pet.builder()
                 .petId(this.petId)
                 .namePet(this.namePet)
-                .ownersId(this.ownersId)
+                .ownersId(this.ownersId != null ? this.ownersId.getDocument() : null)
                 .age(this.age)
                 .species(this.species)
                 .race(this.race)

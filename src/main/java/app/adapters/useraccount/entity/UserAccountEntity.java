@@ -32,6 +32,7 @@ public class UserAccountEntity {
     private String username;
     @Column(name="password")
     private String password;
+    @Enumerated(EnumType.STRING)
     @Column(name="role")
     private Role role;
 
@@ -43,4 +44,5 @@ public class UserAccountEntity {
                 .role(role)
                 .build();
     }
+
 }

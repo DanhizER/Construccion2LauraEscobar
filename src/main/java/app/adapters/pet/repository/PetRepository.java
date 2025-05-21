@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import app.adapters.pet.entity.PetEntity;
 
 public interface PetRepository extends JpaRepository<PetEntity, Long> {
-    List<PetEntity> findByOwnersId(Long ownersId);
+    List<PetEntity> findByOwnersIdDocument(Long ownersId);
 }

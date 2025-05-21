@@ -6,58 +6,40 @@ import org.springframework.stereotype.Component;
 import app.adapters.owner.entity.OwnerEntity;
 import app.adapters.owner.repository.OwnerRepository;
 import app.domain.models.Person;
+import app.domain.types.Role;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class OwnerAdapter {
     @Autowired
     private OwnerRepository ownerRepository;
     
-    @Override
     public boolean existsOwner(Long document){
         return ownerRepository.existsByDocument(document);        
     }
     
-    @Override
     public void saveOwner(Person person){
         person.setRole(Role.USER);
         ownerRepository.save(new OwnerEntity(person));
     }
     
-    @Override
     public Person findByDocument(Long document){
-        return ownerRepository.findByDocument(document)
-                .map(OwnerEntity::toDomain)
-                .orElse(null);
+        OwnerEntity entity = ownerRepository.findByDocument(document);
+        return entity != null ? entity.toDomain() : null;
     }
     
-    @Override
+    
     public List<Person> findAllOwners() {
-        return ownerRepository.findAllOwners()
+        return ownerRepository.findAll()
                 .stream()
                 .map(OwnerEntity::toDomain)
                 .collect(Collectors.toList());
     }
     
-    private Person adapterOwner(OwnerEntity ownerEntity) {
-        if (ownerEntity == null) {
-            return null;
-        }
-        
-        Person person = new Person();
-        person.setDocument(ownerEntity.getDocument());
-        person.setName(ownerEntity.getName());
-        person.setAge(ownerEntity.getAge());
-        person.setRole(Role.USER);
-        return person;
-    }
-
-    @Override
+    
     public void deleteByDocument(Long document) {
-        OwnerEntity ownerEntity = ownerRepository.findByDocument(document);
-        if (ownerEntity != null) {
-            ownerRepository.deleteById(ownerEntity);
-        }
+        ownerRepository.deleteById(document);
     }
 }

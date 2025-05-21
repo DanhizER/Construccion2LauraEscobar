@@ -1,8 +1,11 @@
 package app.adapters.medicalHistory.repository;
 
-import app.adapters.invoice.entity.InvoiceEntity;
 import app.adapters.medicalHistory.entity.MedicalHistoryEntity;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public class MedicalHistoryRepository extends JpaRepository<MedicalHistoryEntity, Long> {
+public interface MedicalHistoryRepository extends JpaRepository<MedicalHistoryEntity, Long> {
+    List<MedicalHistoryEntity> findByPet_PetId(Long petId);
 }

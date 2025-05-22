@@ -22,7 +22,11 @@ public class OwnerController {
     @PostMapping("/pet")
     public ResponseEntity<?> registerPet(@RequestBody RegisterPetRequest request) throws Exception {
         Pet pet = request.toPet();
-        PetValidator.validate(pet);
+        PetValidator.nameValidator(pet.getNamePet());
+        PetValidator.ownersIdValidator(pet.getOwnersId());
+        PetValidator.ageValidator(pet.getAge());
+        PetValidator.speciesValidator(pet.getSpecies());
+        PetValidator.raceValidator(pet.getRace());
         ownerService.registerPet(pet);
         return ResponseEntity.status(HttpStatus.CREATED).body("Mascota registrada exitosamente");
     }
@@ -38,7 +42,11 @@ public class OwnerController {
     @PutMapping("/pet")
     public ResponseEntity<?> updatePet(@RequestBody RegisterPetRequest request) throws Exception {
         Pet pet = request.toPet();
-        PetValidator.validate(pet);
+        PetValidator.nameValidator(request.getName());
+        PetValidator.ownersIdValidator(request.getOwnerDocument());
+        PetValidator.ageValidator(request.getAge());
+        PetValidator.speciesValidator(request.getSpecies());
+        PetValidator.raceValidator(request.getRace());
         ownerService.updatePet(pet);
         return ResponseEntity.ok("Mascota actualizada exitosamente");
     }

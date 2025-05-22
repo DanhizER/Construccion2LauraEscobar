@@ -10,12 +10,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserAccountController {
 
     private final UserAccountService userAccountService;
@@ -25,7 +27,8 @@ public class UserAccountController {
     public ResponseEntity<?> register(@RequestBody RegisterUserRequest request) {
         try {
             UserAccount user = request.toUserAccount();
-            UserValidator.validate(user);
+            UserValidator.usernameValidator(request.getUsername());
+            UserValidator.passwordValidator(request.getPassword());
             userAccountService.registerUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuario registrado exitosamente");
         } catch (Exception e) {
@@ -38,7 +41,8 @@ public class UserAccountController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
             UserAccount user = new UserAccount();
-            UserValidator.validate(user);
+            UserValidator.usernameValidator(request.getUsername());
+            UserValidator.passwordValidator(request.getPassword());
             user.setUserName(request.getUsername());
             user.setPassword(request.getPassword());
             UserAccount logged = userAccountService.login(user);
@@ -78,6 +82,7 @@ public class UserAccountController {
     public ResponseEntity<?> delete(@PathVariable Long document) {
         try {
             userAccountService.deleteUser(document);
+            log.info("Usuario eliminado: " + document);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

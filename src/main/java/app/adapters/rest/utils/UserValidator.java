@@ -1,20 +1,11 @@
 package app.adapters.rest.utils;
 
+import org.springframework.stereotype.Component;
+
 import app.domain.models.UserAccount;
 
+@Component
 public class UserValidator {
-
-    // Validación de objeto completo (en grupo)
-    public static void validate(UserAccount user) throws Exception {
-        if (user == null) throw new Exception("El usuario no puede ser nulo");
-        PersonValidator.documentValidator(user.getDocument());
-        PersonValidator.nameValidator(user.getName());
-        PersonValidator.ageValidator(user.getAge());
-        PersonValidator.roleValidator(user.getRole());
-        // Valida los campos de usuario
-        usernameValidator(user.getUserName());
-        passwordValidator(user.getPassword());
-    }
 
     // Validadores individuales
     public static String usernameValidator(String value) throws Exception {

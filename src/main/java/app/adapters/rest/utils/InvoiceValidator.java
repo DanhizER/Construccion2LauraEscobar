@@ -4,16 +4,6 @@ import app.domain.models.Invoice;
 
 public class InvoiceValidator {
 
-    public static void validate(Invoice invoice) throws Exception {
-        if (invoice == null) throw new Exception("La factura no puede ser nula");
-        invoiceIdValidator(invoice.getInvoiceId());
-        orderIdValidator(invoice.getOrderId());
-        ownerDocumentValidator(invoice.getOwnersId());
-        totalValidator(invoice.getValue());
-        productNameValidator(invoice.getProductName());
-        productQuantityValidator(invoice.getQuantity());
-    }
-
     public static Long invoiceIdValidator(Long value) throws Exception {
         if (value == null || value <= 0) throw new Exception("ID de factura inválido");
         return value;

@@ -28,7 +28,11 @@ public class VeterinarianController {
     @PostMapping("/order")
     public ResponseEntity<?> registerOrder(@RequestBody RegisterOrderRequest request) throws Exception {
         Order order = request.toOrder();
-        OrderValidator.validate(order);
+        OrderValidator.drugDosageValidator(request.getDrugDosage());
+        OrderValidator.medicationValidator(request.getMedication());
+        OrderValidator.orderIdValidator(request.getOrderId());
+        OrderValidator.petIdValidator(request.getPetId());
+        OrderValidator.veterinarianIdValidator(request.getVeterinarianId());
         veterinarianService.registerOrder(order);
         return ResponseEntity.status(HttpStatus.CREATED).body("Orden médica registrada exitosamente");
     }
@@ -62,7 +66,11 @@ public class VeterinarianController {
     @PostMapping("/pet")
     public ResponseEntity<?> registerPet(@RequestBody RegisterPetRequest request) throws Exception {
         Pet pet = request.toPet();
-        PetValidator.validate(pet);
+        PetValidator.nameValidator(request.getName());
+        PetValidator.ownersIdValidator(request.getOwnerDocument());
+        PetValidator.ageValidator(request.getAge());
+        PetValidator.speciesValidator(request.getSpecies());
+        PetValidator.raceValidator(request.getRace());
         veterinarianService.registerPet(pet);
         return ResponseEntity.status(HttpStatus.CREATED).body("Mascota registrada exitosamente");
     }
@@ -71,7 +79,11 @@ public class VeterinarianController {
     @PutMapping("/pet")
     public ResponseEntity<?> updatePet(@RequestBody RegisterPetRequest request) throws Exception {
         Pet pet = request.toPet();
-        PetValidator.validate(pet);
+        PetValidator.nameValidator(request.getName());
+        PetValidator.ownersIdValidator(request.getOwnerDocument());
+        PetValidator.ageValidator(request.getAge());
+        PetValidator.speciesValidator(request.getSpecies());
+        PetValidator.raceValidator(request.getRace());
         veterinarianService.updatePet(pet);
         return ResponseEntity.ok("Mascota actualizada exitosamente");
     }

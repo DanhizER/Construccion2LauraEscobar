@@ -25,7 +25,7 @@ Este proyecto es un sistema de gestión para una clínica veterinaria, desarroll
   El sistema expone endpoints REST para integración externa, permitiendo registrar usuarios, mascotas, consultar información, etc.
 
   **Endpoints principales:**
-    **Usuarios**
+    - **Usuarios**
       - POST /users/register  - Registrar usuario
       - POST /users/login - Inicias sesión
       - GET /users/{userName} - Obtener usurio por username
@@ -33,24 +33,24 @@ Este proyecto es un sistema de gestión para una clínica veterinaria, desarroll
       - DELETE /users/{document}  - Eliminar usuario por documento
       - POST /users/change-password?username={username}&oldPassword={old}&newPassword={new} - Cambiar contraseña
     
-    **Personas**
+    - **Personas**
       - POST /persons - Registrar perosona
       - GET /persons/{document} - Obtener persona por documento
       - DELETE /api/persons/{document}  - Eliminar persona
 
-    **Dueños**
+    - **Dueños**
       - POST //owners/pet  - Registrar mascota
       - GET /owners/pet/{id}  - Buscar mascota por ID
       - PUT /owners/pet - Actualizar mascota
       - GET /owners/{ownerDoc}/pets - Listar todas las mascotas del dueño
 
-    **Vendedor**
+    - **Vendedor**
       - POST /sellers/invoice - Registrar Factura
       - GET /sellers/invoices - Listar todas las facturas
       - GET /sellers/invoices/owner/{ownerDoc} - Listar facturas por documento del dueño
       - GET /sellers/orders - Listar las ordenes medicas
 
-    **Veterinario**
+    - **Veterinario**
       - PUT /veterinarians/pet  - Registrar mascota
       - GET /veterinarians/orders/pet/{petId}   - Buscar orden medica por ID de mascota
       - GET /veterinarians/medical-histories/pet/{petId}  - Buscar historias clinicas por ID de mascota
@@ -61,7 +61,7 @@ Este proyecto es un sistema de gestión para una clínica veterinaria, desarroll
 
 1. **Clona el repositorio:**
    ```sh
-   git clone <URL_DEL_REPOSITORIO>
+   git clone https://github.com/MaoDhell/Construccion2LauraEscobar.git
    cd Construccion2LauraEscobar
    ```
 

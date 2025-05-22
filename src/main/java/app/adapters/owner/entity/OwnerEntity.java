@@ -1,10 +1,11 @@
 package app.adapters.owner.entity;
 
 import app.domain.models.Person;
-import app.domain.models.Pet;
 import app.domain.types.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,7 @@ public class OwnerEntity {
     private String name;
     @Column(name="age")
     private int age;
+    @Enumerated(EnumType.STRING)
     @Column(name="role")
     private Role role;
 

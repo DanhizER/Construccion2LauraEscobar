@@ -41,7 +41,25 @@ public class VeterinarianService {
 				throw new IllegalArgumentException("Ya existe una persona con esa cedula");
 			}
 			person.setRole(Role.USER);
+			
+			String[] nameParts = person.getName().trim().split("\\s+");
+			String nombre = nameParts.length > 0 ? capitalize(nameParts[0]) : "";
+			String apellido = nameParts.length > 1 ? capitalize(nameParts[1]) : "";
+			String docStr = String.valueOf(person.getDocument());
+			String lastTwo = docStr.length() >= 2 ? docStr.substring(docStr.length() - 2) : docStr;
+			String username = nombre + apellido + lastTwo;
+			String password = username; // La contraseña será igual al username
+
 			personPort.savePerson(person);
+
+			UserAccount userAccount = UserAccount.builder()
+				.document(person.getDocument())
+				.userName(username)
+				.password(password)
+				.role(Role.USER)
+				.build();
+			userAccountPort.saveUser(userAccount);
+
 			log.info("Usuario Registrado: "+ person.getName());
 		}catch(Exception e) {
 			log.error("Error al registrar Usuario: {}", e.getMessage());
@@ -191,5 +209,11 @@ public class VeterinarianService {
 		}
 		log.info("Historia clinica de la mascota con ID {} ha sido encontrada",petId);
 		return history;
+	}
+
+	// Método auxiliar para capitalizar la primera letra
+	private String capitalize(String str) {
+		if (str == null || str.isEmpty()) return "";
+		return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
 	}
 }

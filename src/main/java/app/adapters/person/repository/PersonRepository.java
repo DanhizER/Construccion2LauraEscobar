@@ -6,6 +6,6 @@ import app.adapters.person.entity.PersonEntity;
 
 public interface PersonRepository extends JpaRepository<PersonEntity, Long>{
 	
-	boolean existByDocument(long document);
-	PersonEntity findByDocument(long document);
+	boolean existsByDocument(Long document);
+	PersonEntity findByDocument(Long document);
 }

@@ -29,8 +29,8 @@ public class InvoiceAdapter implements InvoicePort {
     }
 
     @Override
-    public List<Invoice> findByOwnerId(Long ownerDoc){
-        return invoiceRepository.findByOwnerId(ownerDoc)
+    public List<Invoice> findInvoicesByOwnerId(Long ownerDoc){
+        return invoiceRepository.findByOwner_Document(ownerDoc)
                 .stream()
                 .map(InvoiceEntity::toDomain)
                 .collect(Collectors.toList());
@@ -42,5 +42,10 @@ public class InvoiceAdapter implements InvoicePort {
                 .stream()
                 .map(InvoiceEntity::toDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteInvoice(Long invoiceId) {
+        invoiceRepository.deleteById(invoiceId);
     }
 }

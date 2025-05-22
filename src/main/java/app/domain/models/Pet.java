@@ -11,15 +11,15 @@ import lombok.Setter;
 @Builder
 public class Pet {
 	private String namePet;
-	private long ownersId;
+	private Long ownersId;
 	private int age;
-	private long petId;
+	private Long petId;
 	private String species;
 	private String race;
 	private String characteristics;
 	private double weight;
 	
-	public Pet(String namePet, long ownersId, int age, long petId, String species, String race, String characteristics,
+	public Pet(String namePet, Long ownersId, int age, Long petId, String species, String race, String characteristics,
 			double weight) {
 		this.namePet = namePet;
 		this.ownersId = ownersId;

@@ -20,6 +20,7 @@ public class PersonEntity {
 	private String name;
 	@Column(name="age")
 	private int age;
+	@Enumerated(EnumType.STRING)
 	@Column(name="role")
 	private Role role;
 

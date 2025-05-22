@@ -1,67 +1,47 @@
 package app.adapters.rest;
 
-import java.util.ArrayList;
-import java.util.list;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import app.adapters.person.PersonAdapter;
+import app.adapters.rest.request.RegisterUserRequest;
+import app.adapters.rest.utils.PersonValidator;
+import app.adapters.rest.utils.SellerValidator;
+import app.adapters.rest.utils.VeterinarianValidator;
+import app.domain.models.Person;
 import app.domain.services.AdminServices;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminController {
 
-    @Autowired
-    private AdminServices adminServices;
-    @Autowired
-    private PersonValidator personValidator;
-    @Autowired
-    private UserValidator UserValidator;
+    private final AdminServices adminServices;
 
-    //Crear Usuario Veterinario (Post)
-    @PostMapping("/veterinarian")
-    Public ResponseEntity createVeterinarian(@RequestBody UserRequest request){
-        try{
-            personValidator.validate(request);
-            user.validate(request);
-
-            UserAccount user = request.toMdodel();
-            adminServices.registerVeterinarian(user,user);;
-        }catch(Exception e){
-            return ResponseEntity.badRequest().body("Error: "+e.getMessage());
-        }
-    }
-    
-    //Crear Usuario Vendedor (Post)
-    @PostMapping("/seller")
-    Public ResponseEntity createSeller(@RequestBody UserRequest request){
-        try{
-            personValidator.validate(request);
-            user.validate(request);
-
-            UserAccount user = request.toMdodel();
-            adminServices.registerSeller(user,user);
-
-            return ResponseEntity.ok("Vendedor registrado exitosamente");
-        }catch(Exception e){
-            return ResponseEntity.badRequest().body("Error: "+e.getMessage());
-        }
+    // Registrar vendedor
+    @PostMapping("/register-seller")
+    public ResponseEntity<?> registerSeller(@RequestBody RegisterUserRequest request) throws Exception {
+        Person person = request.toPerson();
+        PersonValidator.validate(person);
+        SellerValidator.usernameValidator(request.getUsername());
+        SellerValidator.passwordValidator(request.getPassword());
+        adminServices.registerSeller(person, request.getUsername(), request.getPassword());
+        return ResponseEntity.status(HttpStatus.CREATED).body("Vendedor registrado exitosamente");
     }
 
-
-    //Eliminar Usuario ()
-    public ResponseEntity deleteUser(@PathVariable Long document){
-        try{
-            adminServices.deleteUser(document);
-            return ResponseEntity.ok("Usuario elimiado exitosamente");
-        }catch(Exception e){
-            return ResponseEntity.badRequest().body("Error: "+e.getMessage());
-        }
+    @PostMapping("/register-veterinarian")
+    public ResponseEntity<?> registerVeterinarian(@RequestBody RegisterUserRequest request) throws Exception {
+        Person person = request.toPerson();
+        PersonValidator.validate(person);
+        VeterinarianValidator.usernameValidator(request.getUsername());
+        VeterinarianValidator.passwordValidator(request.getPassword());
+        adminServices.registerVeterinarian(person, request.getUsername(), request.getPassword());
+        return ResponseEntity.status(HttpStatus.CREATED).body("Veterinario registrado exitosamente");
     }
-
-
-
-
+    // Eliminar usuario
+    @DeleteMapping("/delete-user/{document}")
+    public ResponseEntity<?> deleteUser(@PathVariable long document) {
+        adminServices.deleteUser(document);
+        return ResponseEntity.ok("Usuario eliminado exitosamente");
+    }
 }

@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class Order {
-	private long orderId;
+	private Long orderId;
 	private Pet pet;
 	private Person ownersId;
 	private UserAccount veterinarian;
@@ -23,7 +23,7 @@ public class Order {
 	private Date orderGeneration;
 	private boolean isOrderCancelled;
 	
-	public Order(long orderId, Pet pet, Person ownersId, UserAccount veterinarian, String medication, String drugDosage,
+	public Order(Long orderId, Pet pet, Person ownersId, UserAccount veterinarian, String medication, String drugDosage,
 			Date orderGeneration) {
 		this.orderId = orderId;
 		this.pet = pet;

@@ -1,6 +1,7 @@
 package app.domain.models;
 
 import app.domain.types.Role;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @NoArgsConstructor
 @SuperBuilder
+@AllArgsConstructor
 public class UserAccount extends Person {
 	private String userName;
 	private String password;

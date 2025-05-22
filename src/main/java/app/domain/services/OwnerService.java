@@ -5,8 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import app.domain.models.Person;
 import app.domain.models.Pet;
+import app.domain.models.UserAccount;
+import app.domain.types.Role;
+import app.ports.PersonPort;
 import app.ports.PetPort;
+import app.ports.UserAccountPort;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -15,6 +20,10 @@ public class OwnerService {
 	
 	@Autowired
 	private PetPort petPort;
+	@Autowired
+	private PersonPort personPort;
+	@Autowired
+	private UserAccountPort userAccountPort;
 	
 	//Validamos si la mascota existe en el sistema
 	public boolean existPetById(long id) {
@@ -73,6 +82,29 @@ public class OwnerService {
 		List<Pet> pets=petPort.findByOwnerId(ownerDoc);
 		log.info("Mascotas encontradas para el dueño con cédula {}: {}", ownerDoc, pets.size());
 		return pets;
+	}
+
+	public void registerOwner(Person owner, String username, String password) {
+		if (personPort.existPerson(owner.getDocument())) {
+			log.error("Registro fallido: Ya existe una persona con esa cédula: {}", owner.getDocument());
+			throw new IllegalArgumentException("Ya existe una persona con esa cédula.");
+		}
+		if (userAccountPort.findByUserName(username) != null) {
+			log.error("Registro fallido: Ya existe un usuario con ese username: {}", username);
+			throw new IllegalArgumentException("Ya existe un usuario con ese username.");
+		}
+		owner.setRole(Role.USER);
+		personPort.savePerson(owner);
+
+		UserAccount userAccount = UserAccount.builder()
+			.document(owner.getDocument())
+			.userName(username)
+			.password(password)
+			.role(Role.USER)
+			.build();
+		userAccountPort.saveUser(userAccount);
+
+		log.info("Dueño registrado exitosamente: {} | Usuario: {}", owner.getName(), username);
 	}
 	
 }

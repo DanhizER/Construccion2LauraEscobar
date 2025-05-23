@@ -5,8 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import app.adapters.owner.entity.OwnerEntity;
+import app.adapters.owner.repository.OwnerRepository;
+import app.domain.models.Person;
 import app.domain.models.UserAccount;
+import app.domain.types.Role;
+import app.ports.PersonPort;
 import app.ports.UserAccountPort;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -14,6 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 public class UserAccountService {
     @Autowired
     private UserAccountPort userPort;
+    @Autowired
+    private PersonPort personPort;
+    @Autowired
+    private OwnerRepository ownerRepository;
+
 
     private UserAccount currentUser; //Usuario actualmente logeado(Autenticado)
 
@@ -32,8 +43,14 @@ public class UserAccountService {
             log.info("Inicio de sesion exitoso");
             return userValidate;
         }
-   public void saveUser(UserAccount user) {
-    	
+    
+    public void saveUser(UserAccount user) {
+    	if (user == null) {
+            log.error("No se puede guardar un usuario nulo");
+            throw new IllegalArgumentException("El usuario no puede ser nulo");
+        }
+        userPort.saveUser(user);
+        log.info("Usuario guardado exitosamente: {}", user.getUserName());
     	
     }
 
@@ -53,12 +70,28 @@ public class UserAccountService {
     }
 
     //Registra un nuevo usuario
-    public void registerUser(UserAccount user) throws Exception {
-        if(userPort.findByUserName(user.getUserName())!= null) {
+    public void registerUser(UserAccount user,Person person) throws Exception {
+         if(userPort.findByUserName(user.getUserName())!= null) {
             log.error("El nombre de usuario ya existe");
             throw new Exception("El nombre de usuario ya existe");
         }
-        userPort.registerUser(user);
+        if(personPort.existPerson(person.getDocument())) {
+            log.error("La persona ya existe");
+            throw new Exception("La persona ya existe");
+        }
+        log.info("Guardando persona...");
+        personPort.savePerson(person);
+        log.info("Persona guardada");
+
+        log.info("Guardando usuario...");
+        userPort.registerUser(user, person);
+        log.info("Usuario guardado");
+
+        if (person.getRole() == Role.USER) {
+            log.info("Guardando owner...");
+            ownerRepository.save(new OwnerEntity(person));
+            log.info("Owner guardado");
+        }
         log.info("Usuario registrado exitosamente");
     }
 
@@ -79,13 +112,24 @@ public class UserAccountService {
     }
 
     //Elimina a un usuario por su username
+    @Transactional
     public void deleteUser(Long document) throws Exception {
         UserAccount user= userPort.findByDocument(document);
         if(user== null) {
             log.error("Usuario no encontrado");
             throw new Exception("Usuario no encontrado");
         }
+        // Eliminar de Owner solo si existe y el rol es USER
+        if (user.getRole() == Role.USER && ownerRepository.existsByDocument(document)) {
+            ownerRepository.deleteByDocument(document);
+            log.info("Usuario eliminado de Owner exitosamente");
+        }
+        // Eliminar de UserAccount
         userPort.deleteUser(document);
+        log.info("Usuario eliminado de UserAccount exitosamente");
+        // Eliminar de Person
+        personPort.deleteByDocument(document);
+        log.info("Usuario eliminado de Person exitosamente");
         log.info("Usuario eliminado exitosamente");
     }
 
@@ -115,6 +159,16 @@ public class UserAccountService {
         List<UserAccount> users= userPort.findAllUsers();
         log.info("Usuarios registrados: {}",users.size());
         return users;
+    }
+
+    public UserAccount findByDocument(Long document) {
+        UserAccount user = userPort.findByDocument(document);
+        if (user == null) {
+            log.error("Usuario no encontrado con documento: {}", document);
+            throw new IllegalArgumentException("Usuario no encontrado");
+        }
+        log.info("Usuario encontrado con documento: {}", document);
+        return user;
     }
 
 }

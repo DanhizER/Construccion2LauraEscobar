@@ -4,14 +4,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import app.adapters.useraccount.entity.UserAccountEntity;
 import app.adapters.useraccount.repository.UserAccountRepository;
+import app.domain.models.Person;
 import app.domain.models.UserAccount;
 import app.ports.UserAccountPort;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Component
+@Slf4j
 public class UserAccountAdapter implements UserAccountPort {
     
     @Autowired
@@ -19,7 +24,7 @@ public class UserAccountAdapter implements UserAccountPort {
     
 
     @Override
-    public void registerUser(UserAccount userAccount) {
+    public void registerUser(UserAccount userAccount, Person person) {
         userAccountRepository.save(new UserAccountEntity(userAccount));
     }
 
@@ -51,7 +56,8 @@ public class UserAccountAdapter implements UserAccountPort {
 
     @Override
     public void deleteUser(Long document) {
-        userAccountRepository.deleteById(document);
+        log.info("Eliminando usuario con documento: {}", document);
+        userAccountRepository.deleteByDocument(document);   
     }
 
 

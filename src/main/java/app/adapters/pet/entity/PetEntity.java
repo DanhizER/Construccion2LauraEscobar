@@ -37,7 +37,6 @@ public class PetEntity {
     public PetEntity(Pet pet) {
         this.petId = pet.getPetId();
         this.namePet = pet.getNamePet();
-        this.ownersId = OwnerEntity.builder().document(pet.getOwnersId()).build();
         this.age = pet.getAge();
         this.species = pet.getSpecies();
         this.race = pet.getRace();

@@ -42,7 +42,7 @@ public class MenuConsola {
         while (!exit) {
             System.out.println("===== MENÚ PRINCIPAL =====");
             System.out.println("1. Iniciar sesión");
-            System.out.println("2. Registrarse como dueño");
+            System.out.println("2. Registrarse como usuario");
             System.out.println("3. Salir");
             System.out.print("Seleccione una opción: ");
             int mainOption = Utils.getReader().nextInt();
@@ -242,7 +242,11 @@ public class MenuConsola {
                         .medication(medication)
                         .drugDosage(drugDosage)
                         .build();
-                    OrderValidator.validate(order);
+                    OrderValidator.drugDosageValidator(order.getDrugDosage());
+                    OrderValidator.medicationValidator(order.getMedication());
+                    OrderValidator.orderIdValidator(order.getOrderId());
+                    OrderValidator.petIdValidator(order.getPet().getPetId());
+                    OrderValidator.veterinarianIdValidator(order.getVeterinarian().getDocument());
                     veterinarianService.registerOrder(order);
                     System.out.println("Orden medica creada satisfactoriamente!");
                     break;
@@ -346,7 +350,11 @@ public class MenuConsola {
                         .race(race)
                         .weight(weight)
                         .build();
-                    PetValidator.validate(regPet);
+                    PetValidator.nameValidator(regPet.getNamePet());
+                    PetValidator.ownersIdValidator(regPet.getOwnersId());
+                    PetValidator.ageValidator(regPet.getAge());
+                    PetValidator.speciesValidator(regPet.getSpecies());
+                    PetValidator.raceValidator(regPet.getRace());  
                     veterinarianService.registerPet(regPet);
                     System.out.println("Mascota registrada exitosamente!");
                     break;
@@ -379,7 +387,12 @@ public class MenuConsola {
                         .race(updRace)
                         .weight(updWeight)
                         .build();
-                    PetValidator.validate(updPet);
+                    PetValidator.nameValidator(updPet.getNamePet());
+                    PetValidator.ownersIdValidator(updPet.getOwnersId());
+                    PetValidator.ageValidator(updPet.getAge());
+                    PetValidator.speciesValidator(updPet.getSpecies());
+                    PetValidator.raceValidator(updPet.getRace());  
+                    veterinarianService.registerPet(updPet);
                     veterinarianService.updatePet(updPet);
                     System.out.println("Mascota actualizada exitosamente!");
                     break;
@@ -450,7 +463,12 @@ public class MenuConsola {
                         .ownersId(ownerDoc)
                         .value(total)
                         .build();
-                    InvoiceValidator.validate(invoice);
+                    InvoiceValidator.invoiceIdValidator(invoice.getInvoiceId());
+                    InvoiceValidator.ownerDocumentValidator(invoice.getOwnersId());
+                    InvoiceValidator.orderIdValidator(invoice.getOrderId());
+                    InvoiceValidator.totalValidator(invoice.getValue());
+                    InvoiceValidator.productNameValidator("Producto"); // Placeholder
+                    InvoiceValidator.productQuantityValidator(1); // Placeholder
                     sellerService.SellProduct(invoice);
                     System.out.println("Factura registrada satisfactoriamente!");
                     break;
@@ -527,7 +545,11 @@ public class MenuConsola {
                         .race(race)
                         .weight(weight)
                         .build();
-                    PetValidator.validate(pet);
+                    PetValidator.nameValidator(pet.getNamePet());
+                    PetValidator.ownersIdValidator(pet.getOwnersId());
+                    PetValidator.ageValidator(pet.getAge());
+                    PetValidator.speciesValidator(pet.getSpecies());
+                    PetValidator.raceValidator(pet.getRace());
                     ownerService.registerPet(pet);
                     System.out.println("Mascota registrada satisfactoriamente!");
                     break;
@@ -559,7 +581,11 @@ public class MenuConsola {
                         .race(updRace)
                         .weight(updWeight)
                         .build();
-                    PetValidator.validate(updPet);
+                    PetValidator.nameValidator(updPet.getNamePet());
+                    PetValidator.ownersIdValidator(updPet.getOwnersId());
+                    PetValidator.ageValidator(updPet.getAge());
+                    PetValidator.speciesValidator(updPet.getSpecies());
+                    PetValidator.raceValidator(updPet.getRace());
                     ownerService.updatePet(updPet);
                     System.out.println("Mascota actualizada satisfactoriamente!");
                     break;

@@ -1,0 +1,748 @@
+{
+	"info": {
+		"_postman_id": "2d75f331-bc44-4f33-96c3-ab7e5edbffa3",
+		"name": "Veterinarian_cURL",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44856538",
+		"_collection_link": "https://laura-4207175.postman.co/workspace/Laura's-Workspace~758efc07-8de5-4c76-8745-c7bea990d461/collection/44856538-2d75f331-bc44-4f33-96c3-ab7e5edbffa3?action=share&source=collection_link&creator=44856538"
+	},
+	"item": [
+		{
+			"name": "Iniciar Sesion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"username\":\"MaoD\",\"password\":\"admin123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/users/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Registrar usuario",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"document\": 123456789,\r\n  \"name\": \"Laura\",\r\n  \"age\": 25,\r\n  \"username\": \"Laura12\",\r\n  \"password\": \"Lau123\",\r\n  \"role\": \"USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener usuario por username",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/users/JuanPerez78",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"JuanPerez78"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todos los usuarios",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar usuario por documento",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/users/1234987",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"1234987"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cambiar contraseña",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/users/change-password?username=Laura12&oldPassword=Laura123&newPassword=Laura12",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"change-password"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "Laura12"
+						},
+						{
+							"key": "oldPassword",
+							"value": "Laura123"
+						},
+						{
+							"key": "newPassword",
+							"value": "Laura12"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Owner Registra Mascota",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Sirius\",\r\n  \"species\": \"Gato\",\r\n  \"race\": \"Bombai\",\r\n  \"age\": 3,\r\n  \"ownerDocument\": 123456789\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/owners/pet",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"owners",
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Owner Busca mascota por ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/owners/pet/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"owners",
+						"pet",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar mascota",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"petId\":1,\r\n    \"ownersId\":123456789,\r\n    \"name\":\"Firulais\",\r\n    \"age\":3,\r\n    \"species\":\"Perro\",\r\n    \"race\":\"Labrador\",\r\n    \"weight\":16.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/owners/pet",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"owners",
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar mascotas del dueño",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/owners/123456789/pets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"owners",
+						"123456789",
+						"pets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registrar veterinario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"document\": 987654321,\r\n  \"name\": \"Carlos\",\r\n  \"age\": 35,\r\n  \"username\": \"CarlosVet\",\r\n  \"password\": \"Vet123\",\r\n  \"role\": \"VETERINARIAN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Veterinario Registra Mascota",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Canela\",\r\n  \"species\": \"Perro\",\r\n  \"race\": \"Labrador\",\r\n  \"age\": 2,\r\n  \"ownerDocument\": 123456789,\r\n  \"characteristics\": \"Juguetona\",\r\n  \"weight\": 18.5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/veterinarians/pet",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"veterinarians",
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Vet Actualiza mascota",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"petId\":1,\r\n    \"name\":\"Firulais\",\r\n    \"ownersId\":123,\r\n    \"age\":4,\r\n    \"species\":\"Perro\",\r\n    \"race\":\"Labrador\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/veterinarians/pet",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"veterinarians",
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vet registra orden medica",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"petId\": 2,\r\n  \"veterinarianId\": 987654321,\r\n  \"medication\": \"Antibiótico\",\r\n  \"drugDosage\": \"500mg cada 12h\",\r\n  \"orderGeneration\": \"2025-05-23\",\r\n  \"orderCancelled\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/veterinarians/order",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"veterinarians",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vet cancela orden medica",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/veterinarians/order/cancel?orderId=2&reason=No+necesaria",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"veterinarians",
+						"order",
+						"cancel"
+					],
+					"query": [
+						{
+							"key": "orderId",
+							"value": "2"
+						},
+						{
+							"key": "reason",
+							"value": "No+necesaria"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vet registra historia clinica",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"petId\": 2,\r\n  \"veterinarianId\": 987654321,\r\n  \"reasonConsultation\": \"Dolor abdominal\",\r\n  \"symptomatology\": \"Vómito y letargo\",  \r\n  \"diagnosis\": \"Gastritis\",\r\n  \"procedure\": \"Examen físico y medicación\",\r\n  \"medication\": \"Omeprazol\",\r\n  \"drugDosage\": \"10mg cada 12h\",\r\n  \"vaccinationHistory\": \"Al día\",\r\n  \"allergyMedications\": \"Ninguna\",\r\n  \"procedureDetail\": \"Se administró medicación oral\",\r\n  \"dateRegistration\": \"2025-05-23\",\r\n  \"orderCancellation\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/veterinarians/medical-history",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"veterinarians",
+						"medical-history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vet actualiza historia clinica",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"medicalHistoryId\":1,\r\n    \"petId\":1,\r\n    \"veterinarianId\":456,\r\n    \"reasonConsultation\":\"Dolor\",\r\n    \"diagnosis\":\"Otitis\",\r\n    \"procedure\":\"Limpieza\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/veterinarians/medical-history",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"veterinarians",
+						"medical-history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscar orden medica por petid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/veterinarians/orders/pet/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"veterinarians",
+						"orders",
+						"pet",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscar historia clinica por id de mascota",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/veterinarians/medical-histories/pet/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"veterinarians",
+						"medical-histories",
+						"pet",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registrar vendedor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"document\": 456789123,\r\n  \"name\": \"Ana\",\r\n  \"age\": 28,\r\n  \"username\": \"AnaSeller\",\r\n  \"password\": \"Sell123\",\r\n  \"role\": \"SELLER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "seller registra factura",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"invoiceId\":1,\r\n    \"ownersId\":123,\r\n    \"orderId\":1,\r\n    \"productName\":\"Vacuna\",\r\n    \"quantity\":1,\r\n    \"value\":50000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/sellers/invoice",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"sellers",
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listar todas la facturas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "//localhost:8080/api/sellers/invoices",
+					"path": [
+						"",
+						"localhost:8080",
+						"api",
+						"sellers",
+						"invoices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listar facturas por Id del dueño",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/sellers/invoices/owner/123",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"sellers",
+						"invoices",
+						"owner",
+						"123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listar todas las ordenes medica",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/sellers/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"sellers",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscar usuario por id / documetno",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"petId\":1,\r\n    \"ownersId\":123456789,\r\n    \"name\":\"Firulais\",\r\n    \"age\":3,\r\n    \"species\":\"Perro\",\r\n    \"race\":\"Labrador\",\r\n    \"weight\":16.0\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/users/document/123456789",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"document",
+						"123456789"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		},
+		{
+			"key": "Laura",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "admin",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

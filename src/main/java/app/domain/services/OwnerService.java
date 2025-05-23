@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import app.adapters.owner.OwnerAdapter;
 import app.domain.models.Person;
 import app.domain.models.Pet;
 import app.domain.models.UserAccount;
@@ -24,6 +24,8 @@ public class OwnerService {
 	private PersonPort personPort;
 	@Autowired
 	private UserAccountPort userAccountPort;
+	@Autowired
+	private OwnerAdapter ownerAdapter;
 	
 	//Validamos si la mascota existe en el sistema
 	public boolean existPetById(long id) {
@@ -32,20 +34,20 @@ public class OwnerService {
 	}
 	
 	//Registro de la mascota solo datos basicos
-	public void registerPet(Pet pet){
-	    if (petPort.existsPetById(pet.getPetId())) {
-	        log.error("Registro fallido: La mascota con ID {} ya está registrada", pet.getPetId());
-	        throw new IllegalArgumentException("La mascota ya está registrada.");
-	    }
-	    Pet newPet = Pet.builder()
-	        .namePet(pet.getNamePet())
-	        .ownersId(pet.getOwnersId())
-	        .age(pet.getAge())
-	        .species(pet.getSpecies())
-	        .race(pet.getRace())
-	        .build();
-	    petPort.savePet(newPet);
-	    log.info("Mascota registrada exitosamente: {}", newPet.getNamePet());
+	public void registerPet(Pet pet) throws Exception {
+		if (pet.getPetId() != null && petPort.existsPetById(pet.getPetId())) {
+			log.error("Registro fallido: La mascota con ID {} ya está registrada", pet.getPetId());
+			throw new IllegalArgumentException("La mascota ya está registrada.");
+		}
+		Pet newPet = Pet.builder()
+			.namePet(pet.getNamePet())
+			.ownersId(pet.getOwnersId())
+			.age(pet.getAge())
+			.species(pet.getSpecies())
+			.race(pet.getRace())
+			.build();
+		ownerAdapter.savePet(newPet);
+		log.info("Mascota registrada exitosamente: {}", newPet.getNamePet());
 		
 	}
 	

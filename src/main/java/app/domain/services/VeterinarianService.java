@@ -16,6 +16,7 @@ import app.ports.OrderPort;
 import app.ports.PersonPort;
 import app.ports.PetPort;
 import app.ports.UserAccountPort;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -67,8 +68,9 @@ public class VeterinarianService {
 	}
 
 	//Creamos la orden medica
+	@Transactional
 	public void registerOrder(Order order) {
-		if (orderPort.findByOrderId(order.getOrderId()) != null) {
+		if (order.getOrderId() != null && orderPort.findByOrderId(order.getOrderId()) != null) {
 			log.error("Ya existe una orden con el ID " + order.getOrderId());
 			throw new IllegalArgumentException("Ya existe una orden con el ID " + order.getOrderId());
 		}
@@ -77,6 +79,7 @@ public class VeterinarianService {
 	}
 
 	//Cancelamos la orden medica
+	@Transactional
 	public void cancelOrder(long orderId, String reason) {
 		Order order = orderPort.findByOrderId(orderId);
 		if (order == null) {
@@ -106,20 +109,21 @@ public class VeterinarianService {
 			throw new IllegalArgumentException("No existe mascota con ID " + medicalHistory.getPet().getPetId());
 		}
 		
-		Order order = orderPort.findByOrderId(medicalHistory.getOrder().getOrderId());
-		if(order == null) {
-			log.error("Orden con id {} no existe para esta historia medica ",medicalHistory.getOrder().getOrderId());
-			throw new IllegalArgumentException("Esta orden no existe para esta historia medica. Codigo de orden: " + medicalHistory.getOrder().getOrderId());
-		}
-		
-		if(pet.getPetId() != order.getPet().getPetId()) {
-			log.error("La mascota con ID {} no esta asociada la orden {} ",medicalHistory.getPet().getPetId(),medicalHistory.getOrder().getOrderId());
-			throw new IllegalArgumentException("La mascota con ID " + medicalHistory.getPet().getPetId() +" no esta asociada la orden "+ medicalHistory.getOrder().getOrderId());
-		}
-		
-		medicalHistory.setVeterinarian(order.getVeterinarian());
-		medicalHistory.setOrder(order);
-		medicalHistory.setPet(pet);
+		Order order = null;
+		if (medicalHistory.getOrder() != null && medicalHistory.getOrder().getOrderId() != null) {
+			order = orderPort.findByOrderId(medicalHistory.getOrder().getOrderId());
+			if(order == null) {
+				log.error("Orden con id {} no existe para esta historia medica ", medicalHistory.getOrder().getOrderId());
+				throw new IllegalArgumentException("Esta orden no existe para esta historia medica. Codigo de orden: " + medicalHistory.getOrder().getOrderId());
+			}
+			// SOLO valida la mascota asociada si hay orden
+			if(pet.getPetId() != order.getPet().getPetId()) {
+				log.error("La mascota con ID {} no esta asociada la orden {} ",medicalHistory.getPet().getPetId(),medicalHistory.getOrder().getOrderId());
+				throw new IllegalArgumentException("La mascota con ID " + medicalHistory.getPet().getPetId() +" no esta asociada la orden "+ medicalHistory.getOrder().getOrderId());
+			}
+			medicalHistory.setVeterinarian(order.getVeterinarian());
+			medicalHistory.setOrder(order);
+		}		
 		
 		medicalHistoryPort.saveMedicalHistory(medicalHistory);
 		log.info("Historia clinica generada exitosamente " + medicalHistory);
@@ -152,17 +156,23 @@ public class VeterinarianService {
 	}
 	
 	//Se registra la mascota en el sistema
-	public void registerPet(Pet pet) {
-		try {
-	        if (petPort.existsPetById(pet.getPetId())) {
-	            log.error("Registro fallido: La mascota con ID {} ya está registrada", pet.getPetId());
-	            throw new IllegalArgumentException("La mascota ya está registrada.");
-	        }
-	        petPort.savePet(pet);
-	        log.info("Mascota registrada exitosamente: {}", pet.getNamePet());
-		}catch(Exception e) {
-			log.error("Error al registrar mascota: {}", e.getMessage());
+	@Transactional
+	public void registerPet(Pet pet) throws Exception {
+	    if (pet.getPetId() != null && petPort.existsPetById(pet.getPetId())) {
+			log.error("Registro fallido: La mascota con ID {} ya está registrada", pet.getPetId());
+			throw new IllegalArgumentException("La mascota ya está registrada.");
 		}
+		Pet newPet = Pet.builder()
+			.namePet(pet.getNamePet())
+			.ownersId(pet.getOwnersId())
+			.age(pet.getAge())
+			.species(pet.getSpecies())
+			.race(pet.getRace())
+			.characteristics(pet.getCharacteristics())
+			.weight(pet.getWeight())
+			.build();
+	    petPort.savePet(newPet);
+	    log.info("Mascota registrada exitosamente: {}", pet.getNamePet());
 	}
 
 	//Si la mascota ya esta registrada podemos actualizar su informacion

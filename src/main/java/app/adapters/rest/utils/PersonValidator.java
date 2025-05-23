@@ -1,7 +1,10 @@
 package app.adapters.rest.utils;
 
+import org.springframework.stereotype.Component;
+
 import app.domain.models.Person;
 
+@Component
 public class PersonValidator {
 
     // Validación de objeto completo (en grupo)
@@ -20,7 +23,7 @@ public class PersonValidator {
     }
 
     public static String nameValidator(String value) throws Exception {
-        if (value == null || value.isBlank()) throw new Exception("Nombre inválido");
+        if (value == null || value.trim().isEmpty()) throw new Exception("Nombre inválido");
         return value;
     }
 

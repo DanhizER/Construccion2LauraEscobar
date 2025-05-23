@@ -32,7 +32,7 @@ public class OwnerEntity {
     
     @Id
     @Column(name="document")
-    private long document;
+    private Long document;
     @Column(name="name")
     private String name;
     @Column(name="age")

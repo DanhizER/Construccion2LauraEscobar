@@ -8,4 +8,5 @@ import app.adapters.owner.entity.OwnerEntity;
 public interface OwnerRepository extends JpaRepository<OwnerEntity, Long> {
     boolean existsByDocument(Long document);
     OwnerEntity findByDocument(Long document);
+    void deleteByDocument(Long document);
 }

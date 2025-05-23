@@ -6,7 +6,6 @@ public class MedicalHistoryValidator {
 
     public static void validate(MedicalHistory mh) throws Exception {
         if (mh == null) throw new Exception("La historia clínica no puede ser nula");
-        medicalHistoryIdValidator(mh.getMedicalHistoryID());
         petIdValidator(mh.getPet().getPetId());
         veterinarianIdValidator(mh.getVeterinarian().getDocument());
         reasonConsultationValidator(mh.getReasonConsultation());

@@ -30,7 +30,6 @@ public class VeterinarianController {
         Order order = request.toOrder();
         OrderValidator.drugDosageValidator(request.getDrugDosage());
         OrderValidator.medicationValidator(request.getMedication());
-        OrderValidator.orderIdValidator(request.getOrderId());
         OrderValidator.petIdValidator(request.getPetId());
         OrderValidator.veterinarianIdValidator(request.getVeterinarianId());
         veterinarianService.registerOrder(order);
@@ -65,6 +64,7 @@ public class VeterinarianController {
     // Registrar una mascota
     @PostMapping("/pet")
     public ResponseEntity<?> registerPet(@RequestBody RegisterPetRequest request) throws Exception {
+        System.out.println("ENTRÓ AL CONTROLLER DE REGISTRO DE MASCOTA");
         Pet pet = request.toPet();
         PetValidator.nameValidator(request.getName());
         PetValidator.ownersIdValidator(request.getOwnerDocument());

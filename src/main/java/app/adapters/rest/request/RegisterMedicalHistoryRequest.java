@@ -30,10 +30,10 @@ public class RegisterMedicalHistoryRequest {
 
     public MedicalHistory toMedicalHistory() {
         return MedicalHistory.builder()
-                .medicalHistoryID(medicalHistoryId)
+                .medicalHistoryID(null)
                 .pet(Pet.builder().petId(petId).build())
                 .veterinarian(UserAccount.builder().document(veterinarianId).build())
-                .order(Order.builder().orderId(orderId).build())
+                .order(orderId != null ? Order.builder().orderId(orderId).build() : null)
                 .reasonConsultation(reasonConsultation)
                 .symptomatology(symptomatology)
                 .diagnosis(diagnosis)

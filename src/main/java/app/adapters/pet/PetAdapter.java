@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import app.domain.models.Pet;
 import app.ports.PetPort;
+import lombok.extern.slf4j.Slf4j;
+import app.adapters.owner.entity.OwnerEntity;
+import app.adapters.owner.repository.OwnerRepository;
 import app.adapters.pet.entity.PetEntity;
 import app.adapters.pet.repository.PetRepository;
 
@@ -11,14 +14,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class PetAdapter implements PetPort {
 
     @Autowired
     private PetRepository petRepository;
+    @Autowired
+    private OwnerRepository ownerRepository;
 
     @Override
     public void savePet(Pet pet) {
-        petRepository.save(new PetEntity(pet));
+        log.info("Buscando owner con documento: {}", pet.getOwnersId());
+        OwnerEntity owner = ownerRepository.findByDocument(pet.getOwnersId());
+        log.info("Resultado de búsqueda de owner: {}", owner);
+        if (owner == null) {
+            throw new RuntimeException("ID de dueño inválido");
+        }
+        PetEntity petEntity = new PetEntity(pet);
+        petEntity.setOwnersId(owner); // Asigna el owner real
+        log.info("Antes de guardar mascota: {}", petEntity);
+        petRepository.save(petEntity);
+        log.info("Después de guardar mascota: {}", petEntity);
     }
 
     @Override

@@ -21,6 +21,7 @@ public class OwnerController {
     // Endpoint para registrar una mascota
     @PostMapping("/pet")
     public ResponseEntity<?> registerPet(@RequestBody RegisterPetRequest request) throws Exception {
+        System.out.println("ENTRÓ AL CONTROLLER DE REGISTRO DE MASCOTA");
         Pet pet = request.toPet();
         PetValidator.nameValidator(pet.getNamePet());
         PetValidator.ownersIdValidator(pet.getOwnersId());

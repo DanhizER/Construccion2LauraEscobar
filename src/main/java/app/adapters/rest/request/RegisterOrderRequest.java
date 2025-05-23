@@ -21,13 +21,17 @@ public class RegisterOrderRequest {
 
     public Order toOrder() {
         return Order.builder()
-                .orderId(orderId)
+                .orderId(null)
                 .pet(Pet.builder().petId(petId).build())
                 .veterinarian(UserAccount.builder().document(veterinarianId).build())
                 .medication(medication)
                 .drugDosage(drugDosage)
                 .orderGeneration(orderGeneration)
-                .isOrderCancelled(cancelled)
+                .isOrderCancelled(false)
                 .build();
     }
+
+    public boolean isOrderCancelled() {
+    return Boolean.TRUE.equals(this.isOrderCancelled());
+}
 }

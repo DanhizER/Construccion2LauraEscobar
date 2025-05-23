@@ -20,6 +20,11 @@ public class MedicalHistoryAdapter implements MedicalHistoryPort {
 
     @Override
     public void saveMedicalHistory(MedicalHistory medicalHistory) {
+        if (medicalHistory.getOrder() != null) {
+            if (medicalHistory.getOrder().getOrderId() == null) {
+                throw new RuntimeException("El ID de la orden asociada no puede ser null");
+            }
+        }
         medicalHistoryRepository.save(new MedicalHistoryEntity(medicalHistory));
     }
 

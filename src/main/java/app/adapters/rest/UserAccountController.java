@@ -4,6 +4,7 @@ import app.adapters.rest.request.RegisterUserRequest;
 import app.adapters.rest.request.LoginRequest;
 import app.adapters.rest.response.UserResponse;
 import app.adapters.rest.utils.UserValidator;
+import app.domain.models.Person;
 import app.domain.models.UserAccount;
 import app.domain.services.UserAccountService;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +28,10 @@ public class UserAccountController {
     public ResponseEntity<?> register(@RequestBody RegisterUserRequest request) {
         try {
             UserAccount user = request.toUserAccount();
+            Person person = request.toPerson();
             UserValidator.usernameValidator(request.getUsername());
             UserValidator.passwordValidator(request.getPassword());
-            userAccountService.registerUser(user);
+            userAccountService.registerUser(user,person);
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuario registrado exitosamente");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -98,6 +100,16 @@ public class UserAccountController {
             return ResponseEntity.ok("Contraseña cambiada exitosamente");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/document/{document}")
+    public ResponseEntity<?> getUserByDocument(@PathVariable Long document) {
+        try {
+            UserAccount user = userAccountService.findByDocument(document);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }

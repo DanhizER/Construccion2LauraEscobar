@@ -1,6 +1,7 @@
 package app.adapters.person;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import app.adapters.person.entity.PersonEntity;
@@ -8,7 +9,11 @@ import app.adapters.person.repository.PersonRepository;
 import app.domain.models.Person;
 import app.ports.PersonPort;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
+@Component
 public class PersonAdapter implements PersonPort {
 	@Autowired
 	private PersonRepository personRepository;
@@ -20,9 +25,9 @@ public class PersonAdapter implements PersonPort {
 	
 	@Override
 	public void savePerson(Person person){
-		PersonEntity personEntity = new PersonEntity(person);
-		personRepository.save(personEntity);
-		person.setDocument(personEntity.getDocument());
+		log.info("Guardando persona en adapter: {}", person);
+		personRepository.save(PersonEntity.fromDomain(person));
+		log.info("Persona guardada en la base de datos");
 	}
 	
 	@Override
@@ -42,8 +47,8 @@ public class PersonAdapter implements PersonPort {
 
 	@Override
 	public void deleteByDocument(Long document) {
-		PersonEntity personEntity = personRepository.findByDocument(document);
-		personRepository.delete(personEntity);
+		log.info("Eliminando persona con documento: {}", document);
+		personRepository.deleteByDocument(document);
 		
 	}
 }

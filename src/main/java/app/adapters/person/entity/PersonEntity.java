@@ -3,6 +3,8 @@ package app.adapters.person.entity;
 import app.domain.models.Person;
 import app.domain.types.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +13,8 @@ import lombok.Setter;
 @Table(name="person")
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class PersonEntity {	
 	@Id
@@ -29,5 +33,14 @@ public class PersonEntity {
 		this.name = person.getName();
 		this.age = person.getAge();
 		this.role = person.getRole();
+	}
+
+	public static PersonEntity fromDomain(Person person) {
+		return PersonEntity.builder()
+				.document(person.getDocument())
+				.name(person.getName())
+				.age(person.getAge())
+				.role(person.getRole())
+				.build();
 	}
 }

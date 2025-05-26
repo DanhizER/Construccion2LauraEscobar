@@ -23,9 +23,10 @@ public class SellerController {
     @PostMapping("/invoice")
     public ResponseEntity<?> sellProduct(@RequestBody RegisterInvoiceRequest request) throws Exception {
         Invoice invoice = request.toInvoice();
-        InvoiceValidator.invoiceIdValidator(request.getInvoiceId());
         InvoiceValidator.ownerDocumentValidator(request.getOwnersId());
-        InvoiceValidator.orderIdValidator(request.getOrderId());
+        if (request.getOrderId() != null) {
+            InvoiceValidator.orderIdValidator(request.getOrderId());
+        }
         InvoiceValidator.productNameValidator(request.getProductName());
         InvoiceValidator.productQuantityValidator(request.getQuantity());
         InvoiceValidator.totalValidator(request.getValue());

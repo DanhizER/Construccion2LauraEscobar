@@ -4,6 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import app.adapters.invoice.entity.InvoiceEntity;
 import app.adapters.invoice.repository.InvoiceRepository;
+import app.adapters.order.entity.OrderEntity;
+import app.adapters.order.repository.OrderRepository;
+import app.adapters.owner.entity.OwnerEntity;
+import app.adapters.owner.repository.OwnerRepository;
+import app.adapters.pet.entity.PetEntity;
+import app.adapters.pet.repository.PetRepository;
 import app.domain.models.Invoice;
 import app.ports.InvoicePort;
 
@@ -15,10 +21,31 @@ public class InvoiceAdapter implements InvoicePort {
 
     @Autowired
     private InvoiceRepository invoiceRepository;
+    @Autowired
+    private PetRepository petRepository;
+    @Autowired
+    private OwnerRepository ownerRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public void saveInvoice(Invoice invoice) {
-        invoiceRepository.save(new InvoiceEntity(invoice));
+        PetEntity petEntity = petRepository.findById(invoice.getPetId()).orElse(null);
+        OwnerEntity ownerEntity = ownerRepository.findByDocument(invoice.getOwnersId());
+        OrderEntity orderEntity = null;
+        if (invoice.getOrderId() != null) {
+            orderEntity = orderRepository.findById(invoice.getOrderId()).orElse(null);
+        }
+
+        InvoiceEntity invoiceEntity = new InvoiceEntity();
+        invoiceEntity.setPet(petEntity);
+        invoiceEntity.setOwner(ownerEntity);
+        invoiceEntity.setOrder(orderEntity);
+        invoiceEntity.setProductName(invoice.getProductName());
+        invoiceEntity.setValue(invoice.getValue());
+        invoiceEntity.setQuantity(invoice.getQuantity());
+
+        invoiceRepository.save(invoiceEntity);
     }
 
     @Override

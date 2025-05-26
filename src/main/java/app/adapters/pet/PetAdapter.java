@@ -39,7 +39,16 @@ public class PetAdapter implements PetPort {
 
     @Override
     public void updatePet(Pet pet) {
-        petRepository.save(new PetEntity(pet));
+        PetEntity existingEntity = petRepository.findById(pet.getPetId()).orElse(null);
+        OwnerEntity ownerEntity = null;
+        if (pet.getOwnersId() != null) {
+            ownerEntity = ownerRepository.findByDocument(pet.getOwnersId());
+        } else if (existingEntity != null) {
+            ownerEntity = existingEntity.getOwnersId();
+        }
+        PetEntity petEntity = new PetEntity(pet);
+        petEntity.setOwnersId(ownerEntity); // Siempre asigna el owner, nunca null si ya existía
+        petRepository.save(petEntity);
     }
 
     @Override

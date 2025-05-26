@@ -177,20 +177,31 @@ public class VeterinarianService {
 
 	//Si la mascota ya esta registrada podemos actualizar su informacion
 	public void updatePet(Pet updatePetInfo){
-		Pet existingPet=petPort.findByIdPet(updatePetInfo.getPetId());
-		if(existingPet==null){
-			log.error("Mascota con ID {} no encontrada",updatePetInfo.getPetId());
-			throw new IllegalArgumentException("Mascota con ID "+updatePetInfo.getPetId()+" no encontrada");
+		if(!petPort.existsPetById(updatePetInfo.getPetId())) {
+			log.error("Actualizacion fallida La mascota con ID {} no encontrada ", updatePetInfo.getPetId());
+			throw new IllegalArgumentException("Mascota no encontrada.");
 		}
 
-		existingPet.setAge(updatePetInfo.getAge());
-		existingPet.setCharacteristics(updatePetInfo.getCharacteristics());
-		existingPet.setWeight(updatePetInfo.getWeight());
-		existingPet.setSpecies(updatePetInfo.getSpecies());
-		existingPet.setRace(updatePetInfo.getRace());
+		// Recupera la mascota actual para no perder campos no enviados
+		Pet currentPet = petPort.findByIdPet(updatePetInfo.getPetId());
+		if (currentPet == null) {
+			throw new IllegalArgumentException("Mascota no encontrada.");
+		}
 
-		petPort.updatePet(existingPet);
-		log.info("Informacion Actualizada existosamente");
+		Pet updatePet = Pet.builder()
+			.petId(updatePetInfo.getPetId())
+			.namePet(updatePetInfo.getNamePet() != null ? updatePetInfo.getNamePet() : currentPet.getNamePet())
+			.ownersId(updatePetInfo.getOwnersId() != null ? updatePetInfo.getOwnersId() : currentPet.getOwnersId())
+			.age(updatePetInfo.getAge() != 0 ? updatePetInfo.getAge() : currentPet.getAge())
+			.species(updatePetInfo.getSpecies() != null ? updatePetInfo.getSpecies() : currentPet.getSpecies())
+			.race(updatePetInfo.getRace() != null ? updatePetInfo.getRace() : currentPet.getRace())
+			.characteristics(updatePetInfo.getCharacteristics() != null ? updatePetInfo.getCharacteristics() : currentPet.getCharacteristics())
+			.weight(updatePetInfo.getWeight() != 0 ? updatePetInfo.getWeight() : currentPet.getWeight())
+			.build();
+
+		petPort.updatePet(updatePet);
+		log.info("Información actualizada exitosamente");
+
 	}
 	
 	//Buscamos las ordenes medicas por ID de mascota

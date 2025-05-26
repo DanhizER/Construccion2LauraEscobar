@@ -5,7 +5,7 @@ import app.domain.models.Order;
 public class OrderValidator {
 
     public static Long orderIdValidator(Long value) throws Exception {
-        if (value == null || value <= 0) throw new Exception("ID de orden inválido");
+        if (value != null && value <= 0) throw new Exception("ID de orden inválido");
         return value;
     }
 

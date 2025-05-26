@@ -17,11 +17,11 @@ public class Invoice {
 	private Long ownersId;
 	private Long orderId;
 	private String productName;
-	private double value;
+	private Double value;
 	private int quantity;
 	private Date invoiceDate;
 	
-	public Invoice(long invoiceId, Long petId, Long ownersId, Long orderId, String productName, double value,
+	public Invoice(Long invoiceId, Long petId, Long ownersId, Long orderId, String productName, Double value,
 			int quantity, Date invoiceDate) {
 		this.invoiceId = invoiceId;
 		this.petId = petId;

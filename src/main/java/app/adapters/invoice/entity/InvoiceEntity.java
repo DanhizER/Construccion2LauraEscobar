@@ -2,6 +2,8 @@ package app.adapters.invoice.entity;
 
 import java.sql.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import app.adapters.order.entity.OrderEntity;
 import app.adapters.owner.entity.OwnerEntity;
 import app.adapters.pet.entity.PetEntity;
@@ -33,10 +35,11 @@ public class InvoiceEntity {
     @Column(name = "product_name")
 	private String productName;
     @Column(name = "total")
-	private double value;
+	private Double value;
     @Column(name = "quantity")
 	private int quantity;
     @Column(name = "invoice_date")
+    @CreationTimestamp
 	private Date invoiceDate;
 
     public InvoiceEntity(Invoice invoice) {

@@ -263,7 +263,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"petId\":1,\r\n    \"ownersId\":123456789,\r\n    \"name\":\"Firulais\",\r\n    \"age\":3,\r\n    \"species\":\"Perro\",\r\n    \"race\":\"Labrador\",\r\n    \"weight\":16.0\r\n}",
+					"raw": "{\r\n    \"petId\":3,\r\n    \"name\":\"Consuelo\",\r\n    \"age\":5,\r\n    \"species\":\"Perro\",\r\n    \"race\":\"Husky\",\r\n    \"weight\":16.0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -594,7 +594,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"invoiceId\":1,\r\n    \"ownersId\":123,\r\n    \"orderId\":1,\r\n    \"productName\":\"Vacuna\",\r\n    \"quantity\":1,\r\n    \"value\":50000\r\n}",
+					"raw": "{\r\n \"petId\": 2,\r\n  \"ownersId\": 123456789,\r\n  \"orderId\": null, \r\n  \"productName\": \"Consulta veterinaria\",\r\n  \"value\": 50000,\r\n  \"quantity\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -622,10 +622,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "//localhost:8080/api/sellers/invoices",
+					"raw": "localhost:8080/api/sellers/invoices",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
 					"path": [
-						"",
-						"localhost:8080",
 						"api",
 						"sellers",
 						"invoices"
@@ -640,7 +642,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/sellers/invoices/owner/123",
+					"raw": "localhost:8080/api/sellers/invoices/owner/123456789",
 					"host": [
 						"localhost"
 					],
@@ -650,7 +652,7 @@
 						"sellers",
 						"invoices",
 						"owner",
-						"123"
+						"123456789"
 					]
 				}
 			},

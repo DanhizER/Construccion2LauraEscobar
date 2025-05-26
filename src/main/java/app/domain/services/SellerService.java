@@ -37,14 +37,14 @@ public class SellerService {
 	//Registramos la venta
 	public void SellProduct(Invoice invoice) {
 		Long orderId = invoice.getOrderId();
-		if(orderId!=null) {
-			if(!isOrderValid(invoice.getOrderId())) {
+		if(orderId != null) {
+			if(!isOrderValid(orderId)) {
 				log.error("No se puede registrar la venta, la orden no existe");
 				throw new IllegalArgumentException("No existe una orden medica con este ID");
 			}
-			invoicePort.saveInvoice(invoice);
-			log.info("Venta registrada exitosamente");
 		}
+		invoicePort.saveInvoice(invoice);
+		log.info("Venta registrada exitosamente");
 	}
 
 	//Consultamos las ventas generadas

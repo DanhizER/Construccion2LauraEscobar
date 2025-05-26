@@ -65,18 +65,29 @@ public class OwnerService {
 	public void updatePet(Pet pet) {
 		if(!petPort.existsPetById(pet.getPetId())) {
 			log.error("Actualizacion fallida La mascota con ID {} no encontrada ", pet.getPetId());
-	        throw new IllegalArgumentException("Mascota no encontrada.");
+			throw new IllegalArgumentException("Mascota no encontrada.");
 		}
-			
-		Pet updatePet= Pet.builder()
-	        .namePet(pet.getNamePet())
-	        .ownersId(pet.getOwnersId())
-	        .age(pet.getAge())
-	        .species(pet.getSpecies())
-	        .race(pet.getRace())
-	        .build();
+
+		// Recupera la mascota actual para no perder campos no enviados
+		Pet currentPet = petPort.findByIdPet(pet.getPetId());
+		if (currentPet == null) {
+			throw new IllegalArgumentException("Mascota no encontrada.");
+		}
+
+		Pet updatePet = Pet.builder()
+			.petId(pet.getPetId())
+			.namePet(pet.getNamePet() != null ? pet.getNamePet() : currentPet.getNamePet())
+			.ownersId(pet.getOwnersId() != null ? pet.getOwnersId() : currentPet.getOwnersId())
+			.age(pet.getAge() != 0 ? pet.getAge() : currentPet.getAge())
+			.species(pet.getSpecies() != null ? pet.getSpecies() : currentPet.getSpecies())
+			.race(pet.getRace() != null ? pet.getRace() : currentPet.getRace())
+			.characteristics(pet.getCharacteristics() != null ? pet.getCharacteristics() : currentPet.getCharacteristics())
+			.weight(pet.getWeight() != 0 ? pet.getWeight() : currentPet.getWeight())
+			.build();
+
 		petPort.updatePet(updatePet);
-		log.info("Mascota actualizada exitosamente: {}", updatePet.getNamePet());	
+		
+		log.info("Mascota actualizada exitosamente: {}", updatePet.getNamePet());
 	}
 	
 	//Listamos todas las mascotas del dueño

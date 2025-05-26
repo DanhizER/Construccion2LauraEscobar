@@ -20,13 +20,15 @@ public class RegisterPetRequest {
 
     public Pet toPet() {
          System.out.println("ownerDocument recibido en request: " + ownerDocument);
-        return Pet.builder()
-                .petId(petId)
-                .namePet(name)
-                .species(species)
-                .race(race)
-                .age(age)
-                .ownersId(ownerDocument)
-                .build();
+        Pet.PetBuilder builder = Pet.builder()
+            .petId(petId)
+            .namePet(name)
+            .species(species)
+            .race(race)
+            .age(age);
+        if (ownerDocument != null) {
+            builder.ownersId(ownerDocument);
+        }
+        return builder.build();
     }
 }

@@ -80,7 +80,9 @@ public class VeterinarianController {
     public ResponseEntity<?> updatePet(@RequestBody RegisterPetRequest request) throws Exception {
         Pet pet = request.toPet();
         PetValidator.nameValidator(request.getName());
-        PetValidator.ownersIdValidator(request.getOwnerDocument());
+        if (request.getOwnerDocument() != null) {
+            PetValidator.ownersIdValidator(request.getOwnerDocument());
+        }
         PetValidator.ageValidator(request.getAge());
         PetValidator.speciesValidator(request.getSpecies());
         PetValidator.raceValidator(request.getRace());
